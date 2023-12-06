@@ -16,6 +16,5 @@ namespace ptm_store_service.Data
         public int CartId { get; set; }
         [ForeignKey("CartId")]
         public Carts Carts { get; set; }
-
     }
 }

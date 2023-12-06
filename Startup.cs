@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ptm_store_service.Data;
-using ptm_store_service.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +32,7 @@ namespace ptm_store_service
             services.AddControllers();
             services.AddDbContext<MyDbContext>(option =>
             {
-                option.UseSqlServer(Configuration.GetConnectionString("MyDB"));
+                option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
             });
             services.AddSwaggerGen(c =>
             {
