@@ -26,5 +26,7 @@ namespace ptm_store_service.Data
         public string Password { get; set; }
 
         public virtual ICollection<Addresses> Addresses { get; set; }
+
+        public virtual Carts Carts { get; set; }
     }
 }
