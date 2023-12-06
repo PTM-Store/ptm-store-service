@@ -72,7 +72,7 @@ namespace ptm_store_service.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+          b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -85,7 +85,6 @@ namespace ptm_store_service.Migrations
 
                     b.Navigation("User");
                 });
-
             modelBuilder.Entity("ptm_store_service.Data.Users", b =>
                 {
                     b.Navigation("Addresses");

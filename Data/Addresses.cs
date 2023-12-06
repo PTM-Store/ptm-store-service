@@ -8,7 +8,9 @@ namespace ptm_store_service.Data
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int Id { get; set; }
+
 
         [Required]
         public string Street { get; set; }
