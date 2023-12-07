@@ -9,26 +9,20 @@ namespace ptm_store_service.Data
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)] 
-        public string CategoryName { get; set; }
+        [StringLength(50)]
+        public string Name { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-z0-9-]+$", ErrorMessage = "Slug không hợp lệ.")]
-        public string CategorySlug { get; set; }
-
-        public int? ParentId { get; set; }
+        [StringLength(50)]
+        public string Icon { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string Description { get; set; }
+        [StringLength(50)]
+        public string Link { get; set; }
 
-        [Required]
-        [MaxLength(255)] 
-        public string Tag { get; set; }
-
-        public ICollection<Products> Products { get; set; }
+        public virtual ICollection<Products> Products { get; set; }
     }
 }
