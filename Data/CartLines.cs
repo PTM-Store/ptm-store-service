@@ -13,8 +13,13 @@ namespace ptm_store_service.Data
         [Required]
         public int Quantity { get; set; }
 
-        public int CartId { get; set; }
+        public int? CartId { get; set; }
         [ForeignKey("CartId")]
-        public Carts Carts { get; set; }
+        public Carts Cart { get; set; }
+
+        [Required]
+        public int? VariantId { get; set; }
+        [ForeignKey("VariantId")]
+        public Variants Variants { get; set; }
     }
 }

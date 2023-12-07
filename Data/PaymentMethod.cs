@@ -12,7 +12,7 @@ namespace ptm_store_service.Data
 
         [Required]
         [StringLength(16)]
-        [RegularExpression(@"^\d{16}$", ErrorMessage = "Số thẻ ngân hàng không hợp lệ.")]
+        [RegularExpression(@"^\d{16}$", ErrorMessage = "Invalid card number")]
         public string CardNumber { get; set;}
 
         [Required]
@@ -21,9 +21,5 @@ namespace ptm_store_service.Data
 
         [Required]
         public DateTime ExpirationDate { get; set; }
-
-
-        
-
     }
 }
