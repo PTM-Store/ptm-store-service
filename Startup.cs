@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ptm_store_service.Data;
+using ptm_store_service.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace ptm_store_service
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ptm_store_service", Version = "v1" });
             });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
