@@ -25,7 +25,9 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+
         "ConnectionStrings__MyDB": "Data Source=DESKTOP-HRDN6UN\\SQLEXPRESS;Initial Catalog=PTM-Store-Database;Integrated Security=True;Encrypt=False"
+
       }
     }
   }
