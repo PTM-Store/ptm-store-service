@@ -38,6 +38,12 @@ namespace ptm_store_service
             services.AddScoped<ICartLinesService, CartLinesService>();
             services.AddScoped<IUserRepository, UsersRepository>();
             services.AddScoped<IUsersService,  UsersService>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            services.AddScoped<ICategoriesService, CategoriesService>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IVariantsRepository, VariantsRepository>();
+            services.AddScoped<IVariantsService, VariantsService>();
             services.AddDbContext<MyDbContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
