@@ -9,6 +9,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ptm_store_service.Data;
+using ptm_store_service.Repositories;
+using ptm_store_service.Repositories.Interface;
+using ptm_store_service.Services;
+using ptm_store_service.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +34,10 @@ namespace ptm_store_service
         {
 
             services.AddControllers();
+            services.AddScoped<ICartLinesRepository, CartLinesReposotory>();
+            services.AddScoped<ICartLinesService, CartLinesService>();
+            services.AddScoped<IUserRepository, UsersRepository>();
+            services.AddScoped<IUsersService,  UsersService>();
             services.AddDbContext<MyDbContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
