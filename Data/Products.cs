@@ -22,10 +22,6 @@ namespace ptm_store_service.Data
         public string Image { get; set;}
 
         public int Status { get; set; }
-
-        public DateTime CreateAt { get; set; }
-
-        public DateTime UpdateAt { get; set; }
         
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]

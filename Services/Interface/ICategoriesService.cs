@@ -10,7 +10,7 @@ namespace ptm_store_service.Services.Interface
         List<CategoriesResponseModel> GetAllCategories();
         CategoriesResponseModel GetCategoryById(int id);
         Categories CreateCategory(CategoriesRequestModel categoriesRequest);
-        Categories UpdateCategory(CategoriesRequestModel categoriesRequest);
+        Categories UpdateCategory(CategoriesResponseModel categoriesResponse);
         void DeleteCategory(int id);
     }
 }

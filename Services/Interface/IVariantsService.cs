@@ -10,7 +10,7 @@ namespace ptm_store_service.Services.Interface
         List<VariantsResponseModel> GetAllVariants();
         VariantsResponseModel GetVariantById(int id);
         Variants CreateVariant(VariantsRequestModel variantsRequest);
-        Variants UpdateVariant(VariantsRequestModel variantsRequest);
+        Variants UpdateVariant(VariantsResponseModel variantsResponse);
         void DeleteVariant(int id);
     }
 }

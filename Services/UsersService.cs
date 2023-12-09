@@ -76,14 +76,18 @@ namespace ptm_store_service.Services
             try
             {
                 var user = _userRepository.GetUserById(id);
-                var userResponse = new UserResponseModel
+                if(user != null)
                 {
-                    Id = user.Id,
-                    ClientName = user.ClientName,
-                    Email = user.Email,
-                    Password = user.Password
-                };
-                return userResponse;
+                    var userResponse = new UserResponseModel
+                    {
+                        Id = user.Id,
+                        ClientName = user.ClientName,
+                        Email = user.Email,
+                        Password = user.Password
+                    };
+                    return userResponse;
+                }
+                return null;
             }
             catch(Exception ex)
             {

@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace ptm_store_service.Repositories
 {
-    public class ProductsCategory : IProductsRepository
+    public class ProductsRepository : IProductsRepository
     {
         private readonly MyDbContext _context;
 
-        public ProductsCategory(MyDbContext context)
+        public ProductsRepository(MyDbContext context)
         {
             _context = context;
         }
