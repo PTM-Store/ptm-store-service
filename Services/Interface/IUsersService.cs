@@ -8,6 +8,7 @@ namespace ptm_store_service.Services.Interface
     public interface IUsersService
     {
         List<UserResponseModel> GetAllUsers();
+        List<UserResponseModel> GetAllUsersSearched(string search);
         UserResponseModel GetUserById(int id);
         Users CreateUser(UsersRequestModel usersRequest);
         Users UpdateUser(UserResponseModel userResponseModel);
