@@ -38,6 +38,16 @@ namespace ptm_store_service.Repositories
             return User;
         }
 
+        public List<Users> GetUsersSearched(string search, double? from, double? to)
+        {
+            var allUsers = _context.Users.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                allUsers = allUsers.Where(user => user.Email.Contains(search));
+            }
+            return allUsers.ToList();
+        }
+
         public void UpdateUser(Users user)
         {
             _context.Users.Update(user);

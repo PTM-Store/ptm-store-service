@@ -71,6 +71,26 @@ namespace ptm_store_service.Services
             
         }
 
+        public List<UserResponseModel> GetAllUsersSearched(string search)
+        {
+            try
+            {
+                var usersSearchList = _userRepository.GetUsersSearched(search);
+                var result = usersSearchList.Select(user => new UserResponseModel
+                {
+                    Id = user.Id,
+                    ClientName = user.ClientName,
+                    Email = user.Email,
+                    Password = user.Password
+                });
+                return result.ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public UserResponseModel GetUserById(int id)
         {
             try

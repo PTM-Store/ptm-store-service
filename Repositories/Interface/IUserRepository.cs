@@ -7,6 +7,7 @@ namespace ptm_store_service.Repositories.Interface
     public interface IUserRepository
     {
         List<Users> GetAllUsers();
+        List<Users> GetUsersSearched(string search);
         Users GetUserById(int id);
         void CreateUser(Users user);
         void UpdateUser(Users user);

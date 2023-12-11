@@ -33,5 +33,11 @@ namespace ptm_store_service.Controllers
             var user = _usersService.CreateUser(usersRequestModel);
             return Ok(user);
         }
+
+        [HttpGet]
+        public IActionResult GetAllSearch(string search)
+        {
+            var result = _usersService.GetAllUsersSearched(search);
+        }
     }
 }
