@@ -16,5 +16,13 @@ namespace ptm_store_service.Data
         public DbSet<Products> Products { get; set; }
         public DbSet<Variants> Variants { get; set; }
         #endregion
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
+        }
     }
 }

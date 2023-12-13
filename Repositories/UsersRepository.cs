@@ -1,4 +1,5 @@
 ﻿using ptm_store_service.Data;
+using ptm_store_service.Models.Request;
 using ptm_store_service.Repositories.Interface;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,20 +33,16 @@ namespace ptm_store_service.Repositories
             return UsersList;
         }
 
+        public Users GetUserByEmailAndPassword(LoginUserRequest loginUser)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Email == loginUser.Email && u.Password == loginUser.Password);
+            return user;
+        }
+
         public Users GetUserById(int id)
         {
             var User = _context.Users.Find(id);
             return User;
-        }
-
-        public List<Users> GetUsersSearched(string search, double? from, double? to)
-        {
-            var allUsers = _context.Users.AsQueryable();
-            if (!string.IsNullOrEmpty(search))
-            {
-                allUsers = allUsers.Where(user => user.Email.Contains(search));
-            }
-            return allUsers.ToList();
         }
 
         public void UpdateUser(Users user)

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using ptm_store_service.Models;
 using ptm_store_service.Models.Request;
+using ptm_store_service.Models.Response;
 using ptm_store_service.Services.Interface;
 
 namespace ptm_store_service.Controllers
@@ -16,28 +18,25 @@ namespace ptm_store_service.Controllers
             _usersService = usersService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpPost("Login")]
+        public IActionResult Validate(LoginUserRequest loginUser)
         {
-            var UserList = _usersService.GetAllUsers();
-            return Ok(UserList);
-        }
-
-        [HttpPost]
-        public IActionResult Create(UsersRequestModel usersRequestModel)
-        {
-            if (usersRequestModel == null)
+            var user = _usersService.GetUserLogin(loginUser);
+            if (user == null)
             {
-                return BadRequest();
+                return Ok(new ApiResponse
+                {
+                    Success = false,
+                    Message = "Invalid user",
+                    Data = null
+                });
             }
-            var user = _usersService.CreateUser(usersRequestModel);
-            return Ok(user);
-        }
-
-        [HttpGet]
-        public IActionResult GetAllSearch(string search)
-        {
-            var result = _usersService.GetAllUsersSearched(search);
+            return Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "Authenticate success",
+                Data = _usersService.GenerateToken(user)
+            });
         }
     }
 }
