@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ptm_store_service.Services.Interface;
 
@@ -16,6 +17,7 @@ namespace ptm_store_service.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             var CartLinesList = cartLinesService.GetAllCartLines();

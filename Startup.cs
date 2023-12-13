@@ -1,15 +1,20 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ptm_store_service.Data;
+using ptm_store_service.Models;
 using ptm_store_service.Repositories;
 using ptm_store_service.Repositories.Interface;
 using ptm_store_service.Services;
 using ptm_store_service.Services.Interface;
+using System;
+using System.Text;
 
 namespace ptm_store_service
 {
@@ -30,7 +35,7 @@ namespace ptm_store_service
             services.AddScoped<ICartLinesRepository, CartLinesReposotory>();
             services.AddScoped<ICartLinesService, CartLinesService>();
             services.AddScoped<IUserRepository, UsersRepository>();
-            services.AddScoped<IUsersService,  UsersService>();
+            services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
@@ -40,6 +45,23 @@ namespace ptm_store_service
             services.AddDbContext<MyDbContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
+            });
+            services.Configure<AppSetting>(Configuration.GetSection("AppSettings"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    //Tự cấp token
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    //Ký vào token
+                    ValidateIssuerSigningKey = true,
+                    //ClockSkew = TimeSpan.Zero,
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
             });
             services.AddSwaggerGen(c =>
             {
@@ -59,8 +81,10 @@ namespace ptm_store_service
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
+            
 
+            app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

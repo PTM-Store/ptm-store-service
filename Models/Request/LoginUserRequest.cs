@@ -1,21 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ptm_store_service.Data
+namespace ptm_store_service.Models.Request
 {
-    [Table("Users")]
-    public class Users
+    public class LoginUserRequest
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        public string ClientName { get; set; }
-
         [Required(ErrorMessage = "Email is required.")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Invalid email format.")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
@@ -25,9 +13,5 @@ namespace ptm_store_service.Data
         //[MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
         //[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+=])[A-Za-z\d!@#$%^&*()-+=]{8,}$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
         public string Password { get; set; }
-
-        public virtual ICollection<Addresses> Addresses { get; set; }
-
-        public virtual Carts Carts { get; set; }
     }
 }
