@@ -73,7 +73,7 @@ namespace ptm_store_service.Services
             return Convert.ToBase64String(random);
         }
 
-        public TokenModel GenerateToken(Users users)
+        public TokenResponseModel GenerateToken(Users users)
         {
             var expiryDuration = new TimeSpan(0, 30, 0);
 
@@ -82,8 +82,8 @@ namespace ptm_store_service.Services
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, users.ClientName),
-                    new Claim(ClaimTypes.NameIdentifier,
-                        Guid.NewGuid().ToString())
+                    new Claim(ClaimTypes.NameIdentifier, users.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                 };
                 var key = _configuration["Jwt:Key"];
                 var issuer = _configuration["Jwt:Issuer"];
@@ -94,10 +94,11 @@ namespace ptm_store_service.Services
 
                 var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
-                return new TokenModel
+                return new TokenResponseModel
                 {
                     AccessToken = accessToken,
-                    RefreshToken = GenerateRefreshToken()
+                    RefreshToken = GenerateRefreshToken(),
+                    UserId = users.Id
                 };
             }
             catch (Exception ex)

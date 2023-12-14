@@ -19,7 +19,7 @@ namespace ptm_store_service.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(CategoriesRequestModel categoriesRequestModel)
+        public IActionResult Create([FromBody]CategoriesRequestModel categoriesRequestModel)
         {
             var category = _categoriesService.CreateCategory(categoriesRequestModel);
             return Ok(category);

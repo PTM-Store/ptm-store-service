@@ -14,7 +14,7 @@ namespace ptm_store_service.Services.Interface
         Users CreateUser(UsersRequestModel usersRequest);
         Users UpdateUser(UserResponseModel userResponseModel);
         void DeleteUser(int id);
-        TokenModel GenerateToken(Users loginUser);
+        TokenResponseModel GenerateToken(Users loginUser);
         string GenerateRefreshToken();
     }
 }
