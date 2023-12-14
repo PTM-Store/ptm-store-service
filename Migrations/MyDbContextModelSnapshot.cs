@@ -156,6 +156,31 @@ namespace ptm_store_service.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("ptm_store_service.Data.Token", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Token");
+                });
+
             modelBuilder.Entity("ptm_store_service.Data.Users", b =>
                 {
                     b.Property<int>("Id")
@@ -261,6 +286,17 @@ namespace ptm_store_service.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("ptm_store_service.Data.Token", b =>
+                {
+                    b.HasOne("ptm_store_service.Data.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Variants", b =>

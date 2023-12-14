@@ -15,6 +15,7 @@ namespace ptm_store_service.Data
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Products> Products { get; set; }
         public DbSet<Variants> Variants { get; set; }
+        public DbSet<Token> Tokens { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

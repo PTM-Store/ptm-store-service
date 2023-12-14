@@ -19,7 +19,7 @@ namespace ptm_store_service.Controllers
         }
 
         [HttpPost("Login")]
-        public IActionResult Validate(LoginUserRequest loginUser)
+        public IActionResult Validate([FromBody]LoginUserRequest loginUser)
         {
             var user = _usersService.GetUserLogin(loginUser);
             if (user == null)
@@ -37,6 +37,13 @@ namespace ptm_store_service.Controllers
                 Message = "Authenticate success",
                 Data = _usersService.GenerateToken(user)
             });
+        }
+
+        [HttpPost("Register")]
+        public IActionResult Register(UsersRequestModel usersRequest)
+        {
+            var user = _usersService.CreateUser(usersRequest);
+            return Ok(user);
         }
     }
 }
