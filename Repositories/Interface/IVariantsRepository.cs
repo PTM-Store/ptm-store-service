@@ -11,5 +11,6 @@ namespace ptm_store_service.Repositories.Interface
         void CreateVariant(Variants variant);
         void DeleteVariant(Variants variant);
         void UpdateVariant(Variants variant);
+        List<Variants> GetVariantsByProductId(int id);
     }
 }

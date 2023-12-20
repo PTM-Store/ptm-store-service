@@ -16,12 +16,6 @@ namespace ptm_store_service.Controllers
             this.cartLinesService = cartLinesService;
         }
 
-        [HttpGet]
-        [Authorize]
-        public IActionResult GetAll()
-        {
-            var CartLinesList = cartLinesService.GetAllCartLines();
-            return Ok(CartLinesList);
-        }
+        
     }
 }

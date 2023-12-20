@@ -12,7 +12,7 @@ namespace ptm_store_service.Models.Response
 
         public string Image { get; set; }
 
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         public int? CategoryId { get; set; }
     }

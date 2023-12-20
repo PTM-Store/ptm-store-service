@@ -11,10 +11,11 @@ namespace ptm_store_service.Services.Interface
         List<UserResponseModel> GetAllUsers();
         UserResponseModel GetUserById(int id);
         Users GetUserLogin(LoginUserRequest loginUser);
-        Users CreateUser(UsersRequestModel usersRequest);
+        UserResponseModel CreateUser(UsersRequestModel usersRequest);
         Users UpdateUser(UserResponseModel userResponseModel);
         void DeleteUser(int id);
         TokenResponseModel GenerateToken(Users loginUser);
         string GenerateRefreshToken();
+        UserResponseModel GetUserByEmail(string email);
     }
 }

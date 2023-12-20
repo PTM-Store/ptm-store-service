@@ -99,6 +99,30 @@ namespace ptm_store_service.Services
             }
         }
 
+        public List<VariantsResponseModel> GetVariantsByProductId(int productId)
+        {
+            try
+            {
+                var variants = _variantsRepository.GetVariantsByProductId(productId);
+                var variantsResponse = variants.Select(va => new VariantsResponseModel
+                {
+                    Id = va.Id,
+                    Name = va.Name,
+                    SkuCode = va.SkuCode,
+                    Price = va.Price,
+                    SalePrice = va.SalePrice,
+                    Image = va.Image,
+                    ProductId = va.ProductId
+                });
+                return variantsResponse.ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            }
+            
+
         public Variants UpdateVariant(VariantsResponseModel variantsResponse)
         {
             try

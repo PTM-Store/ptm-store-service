@@ -33,6 +33,12 @@ namespace ptm_store_service.Repositories
             return UsersList;
         }
 
+        public Users GetUserByEmail(string email)
+        {
+            var User = _context.Users.FirstOrDefault(x => x.Email == email);
+            return User;
+        }
+
         public Users GetUserByEmailAndPassword(LoginUserRequest loginUser)
         {
             var user = _context.Users.SingleOrDefault(u => u.Email == loginUser.Email && u.Password == loginUser.Password);

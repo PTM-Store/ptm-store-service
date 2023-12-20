@@ -10,7 +10,7 @@ using ptm_store_service.Data;
 namespace ptm_store_service.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231214141934_dbinit")]
+    [Migration("20231220014228_dbinit")]
     partial class dbinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,14 +88,13 @@ namespace ptm_store_service.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Carts");
                 });
@@ -144,8 +143,8 @@ namespace ptm_store_service.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -276,7 +275,9 @@ namespace ptm_store_service.Migrations
                 {
                     b.HasOne("ptm_store_service.Data.Users", "User")
                         .WithOne("Carts")
-                        .HasForeignKey("ptm_store_service.Data.Carts", "UserId");
+                        .HasForeignKey("ptm_store_service.Data.Carts", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -293,7 +294,7 @@ namespace ptm_store_service.Migrations
             modelBuilder.Entity("ptm_store_service.Data.Token", b =>
                 {
                     b.HasOne("ptm_store_service.Data.Users", "Users")
-                        .WithMany()
+                        .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -330,6 +331,8 @@ namespace ptm_store_service.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("Carts");
+
+                    b.Navigation("Tokens");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Variants", b =>

@@ -12,7 +12,7 @@ namespace ptm_store_service.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [ForeignKey("UserId")]
         public Users User { get; set; }
 

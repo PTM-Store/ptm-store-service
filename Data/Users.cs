@@ -29,5 +29,7 @@ namespace ptm_store_service.Data
         public virtual ICollection<Addresses> Addresses { get; set; }
 
         public virtual Carts Carts { get; set; }
+
+        public virtual ICollection<Token> Tokens { get; set; }
     }
 }

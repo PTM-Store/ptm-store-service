@@ -10,6 +10,7 @@ namespace ptm_store_service.Repositories.Interface
         List<Users> GetAllUsers();
         Users GetUserById(int id);
         Users GetUserByEmailAndPassword(LoginUserRequest loginUser);
+        Users GetUserByEmail(string email);
         void CreateUser(Users user);
         void UpdateUser(Users user);
         void DeleteUser(Users user);

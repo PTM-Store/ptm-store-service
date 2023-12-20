@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ptm_store_service.Repositories
 {
-    public class CartLinesReposotory : ICartLinesRepository
+    public class CartLinesRepository : ICartLinesRepository
     {
         private readonly MyDbContext _context;
 
-        public CartLinesReposotory(MyDbContext context)
+        public CartLinesRepository(MyDbContext context)
         {
             _context = context;
         }
@@ -32,6 +32,12 @@ namespace ptm_store_service.Repositories
         {
             var CartLinesList = _context.CartLines.ToList();
             return CartLinesList;
+        }
+
+        public List<CartLines> GetCartLinesByCartId(int id)
+        {
+            var cartLines = _context.CartLines.Where(ca =>  ca.CartId == id).ToList();
+            return cartLines;
         }
 
         public CartLines GetCartLinesById(int id)

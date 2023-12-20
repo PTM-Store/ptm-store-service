@@ -33,6 +33,12 @@ namespace ptm_store_service.Repositories
             return products;
         }
 
+        public List<Products> GetProductsByCategoryId(int categoryId)
+        {
+            var products = _context.Products.Where(p =>  p.CategoryId == categoryId).ToList();
+            return products;
+        }
+
         public Products GetProductsById(int id)
         {
             var product = _context.Products.Find(id);

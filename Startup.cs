@@ -13,7 +13,6 @@ using ptm_store_service.Repositories;
 using ptm_store_service.Repositories.Interface;
 using ptm_store_service.Services;
 using ptm_store_service.Services.Interface;
-using System;
 using System.Text;
 
 namespace ptm_store_service
@@ -30,9 +29,20 @@ namespace ptm_store_service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
-            services.AddScoped<ICartLinesRepository, CartLinesReposotory>();
+
+            // Add CORS configuration
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
+            services.AddScoped<ICartLinesRepository, CartLinesRepository>();
             services.AddScoped<ICartLinesService, CartLinesService>();
             services.AddScoped<IUserRepository, UsersRepository>();
             services.AddScoped<IUsersService, UsersService>();
@@ -42,27 +52,33 @@ namespace ptm_store_service
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IVariantsRepository, VariantsRepository>();
             services.AddScoped<IVariantsService, VariantsService>();
-            services.AddDbContext<MyDbContext>(option =>
+            services.AddScoped<ICartsRepository, CartsRepository>();
+            services.AddScoped<ICartsService, CartsService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<ITokenService, TokenService>();
+
+            services.AddDbContext<MyDbContext>(options =>
             {
-                option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
+                options.UseSqlServer(Configuration.GetConnectionString("MyDb"));
             });
+
             services.Configure<AppSetting>(Configuration.GetSection("AppSettings"));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    //Tự cấp token
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    //Ký vào token
                     ValidateIssuerSigningKey = true,
-                    //ClockSkew = TimeSpan.Zero,
                     ValidAudience = Configuration["Jwt:Issuer"],
                     ValidIssuer = Configuration["Jwt:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ptm_store_service", Version = "v1" });
@@ -81,10 +97,12 @@ namespace ptm_store_service
 
             app.UseHttpsRedirection();
 
-            
+            app.UseCors("AllowReactApp");
 
             app.UseAuthentication();
+
             app.UseRouting();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

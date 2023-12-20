@@ -11,5 +11,6 @@ namespace ptm_store_service.Repositories.Interface
         void CreateProduct(Products product);
         void UpdateProduct(Products product);
         void DeleteProduct(Products product);
+        List<Products> GetProductsByCategoryId(int categoryId);
     }
 }
