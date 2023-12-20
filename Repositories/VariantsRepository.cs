@@ -38,6 +38,12 @@ namespace ptm_store_service.Repositories
             return Variants;
         }
 
+        public List<Variants> GetVariantsByProductId(int id)
+        {
+            var ListVariants = _context.Variants.Where(va =>  va.ProductId == id).ToList();
+            return ListVariants;
+        }
+
         public void UpdateVariant(Variants variant)
         {
             _context.Variants.Update(variant);

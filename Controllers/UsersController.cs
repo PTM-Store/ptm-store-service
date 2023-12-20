@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using ptm_store_service.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ptm_store_service.Models.Request;
 using ptm_store_service.Models.Response;
 using ptm_store_service.Services.Interface;
@@ -12,10 +11,16 @@ namespace ptm_store_service.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
+        private readonly IEmailService _emailService;
+        private readonly ICartsService _cartsService;
+        private readonly ITokenService _tokenService;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, IEmailService emailService, ICartsService cartsService, ITokenService tokenService)
         {
             _usersService = usersService;
+            _emailService = emailService;
+            _cartsService = cartsService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("Login")]
@@ -31,18 +36,34 @@ namespace ptm_store_service.Controllers
                     Data = null
                 });
             }
-            return Ok(new ApiResponse
-            {
-                Success = true,
-                Message = "Authenticate success",
-                Data = _usersService.GenerateToken(user)
-            });
+            return Ok(_usersService.GenerateToken(user));
         }
 
         [HttpPost("Register")]
-        public IActionResult Register(UsersRequestModel usersRequest)
+        public IActionResult Register([FromBody] UsersRequestModel usersRequest)
         {
             var user = _usersService.CreateUser(usersRequest);
+            if(user != null)
+            {
+                var cartRequest = new CartsRequestModel
+                {
+                    UserId = user.Id,
+                };
+                var cart = _cartsService.CreateCart(cartRequest);
+            }
+            return Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "Register successfully!!!",
+                Data = user
+            });
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public IActionResult GetUserInfo([FromRoute]int id)
+        {
+            var user = _usersService.GetUserById(id);
             return Ok(user);
         }
     }

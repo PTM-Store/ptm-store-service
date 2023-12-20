@@ -12,5 +12,6 @@ namespace ptm_store_service.Services.Interface
         CartLines CreateCartLine(CartLinesRequestModel cartLinesRequest);
         CartLines UpdateCartLine(CartLinesRequestModel cartLinesRequest);
         void DeleteCartLine(int id);
+        List<CartLinesResponseModel> GetCartLinesByCartId(int cartId);
     }
 }

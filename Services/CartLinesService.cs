@@ -61,8 +61,8 @@ namespace ptm_store_service.Services
                 {
                     Id = cartLine.Id,
                     Quantity = cartLine.Quantity,
-                    CartId = cartLine.CartId,
-                    VariantId = cartLine.VariantId
+                    CartId = (int)cartLine.CartId,
+                    VariantId = (int)cartLine.VariantId
                 });
                 return responseList.ToList();
             }
@@ -82,8 +82,8 @@ namespace ptm_store_service.Services
                 {
                     Id = cartLine.Id,
                     Quantity = cartLine.Quantity,
-                    CartId = cartLine.CartId,
-                    VariantId = cartLine.VariantId
+                    CartId = (int)cartLine.CartId,
+                    VariantId = (int)cartLine.VariantId
                 };
                 return cartLineResponse;
             }
@@ -91,6 +91,20 @@ namespace ptm_store_service.Services
             {
                 throw ex;
             }
+        }
+
+        public List<CartLinesResponseModel> GetCartLinesByCartId(int cartId)
+        {
+            var cartLines = _repository.GetCartLinesByCartId(cartId);
+            var cartLinesResponse = cartLines.Select(x => new CartLinesResponseModel
+            {
+                Id = x.Id,
+                Quantity = x.Quantity,
+                CartId = (int)x.CartId,
+                VariantId = (int)x.VariantId
+
+            });
+            return cartLinesResponse.ToList();
         }
 
         public CartLines UpdateCartLine(CartLinesRequestModel cartLinesRequest)

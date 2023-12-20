@@ -18,7 +18,7 @@ namespace ptm_store_service.Services
             _productsRepository = productsRepository;
         }
 
-        public Products CreateProduct(ProductsRequestModel productsRequest)
+        public ProductsResponseModel CreateProduct(ProductsRequestModel productsRequest)
         {
             try
             {
@@ -31,7 +31,16 @@ namespace ptm_store_service.Services
                     CategoryId = productsRequest.CategoryId
                 };
                 _productsRepository.CreateProduct(product);
-                return product;
+                var productResponse = new ProductsResponseModel
+                {
+                    Id = product.Id,
+                    Title = product.Title,
+                    Description = product.Description,
+                    Image = product.Image,
+                    Status = product.Status,
+                    CategoryId = product.CategoryId
+                };
+                return productResponse;
             }
             catch(Exception ex)
             {
@@ -69,6 +78,28 @@ namespace ptm_store_service.Services
                 return productsResponseList.ToList();
             }
             catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ProductsResponseModel> GetProductsByCategoryId(int categoryId)
+        {
+            try
+            {
+                var products = _productsRepository.GetProductsByCategoryId(categoryId);
+                var productsResponse = products.Select(pr => new ProductsResponseModel
+                {
+                    Id = pr.Id,
+                    Title = pr.Title,
+                    Description = pr.Description,
+                    Image = pr.Image,
+                    Status = pr.Status,
+                    CategoryId = pr.CategoryId
+                });
+                return productsResponse.ToList();
+            }
+            catch(Exception ex)
             {
                 throw ex;
             }
