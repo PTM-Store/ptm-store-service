@@ -13,49 +13,56 @@ namespace ptm_store_service.Services
     {
         private readonly IProductsRepository _productsRepository;
 
-        public ProductsService(IProductsRepository productsRepository)
+        private readonly ICategoriesService _categoriesService;
+
+        private readonly ITagsService _tagsService;
+
+        private readonly IReviewsService _reviewsService;
+
+        private readonly IGalleriesService _galleryeriesService;
+
+        public ProductsService(IProductsRepository productsRepository, ICategoriesService categoriesService, ITagsService tagsService, IReviewsService reviewsService, IGalleriesService galleryeriesService)
         {
             _productsRepository = productsRepository;
+            _categoriesService = categoriesService;
+            _tagsService = tagsService;
+            _reviewsService = reviewsService;
+            _galleryeriesService = galleryeriesService;
         }
 
-        public ProductsResponseModel CreateProduct(ProductsRequestModel productsRequest)
+        public ProductsResponseModel CreateProduct(ProductsRequestModel request)
         {
             try
             {
                 var product = new Products
                 {
-                    Title = productsRequest.Title,
-                    Description = productsRequest.Description,
-                    Image = productsRequest.Image,
-                    Status = productsRequest.Status,
-                    CategoryId = productsRequest.CategoryId
+                    SKU = request.SKU,
+                    Content = request.Content,
+                    ReviewCounts = request.ReviewCounts,
+                    Stars = request.Stars,
+                    Title = request.Title,
+                    Price = request.Price,
+                    OldPrice = request.OldPrice,
+                    Symbols = request.Symbols,
+                    MainImg = request.MainImg,
                 };
                 _productsRepository.CreateProduct(product);
                 var productResponse = new ProductsResponseModel
                 {
                     Id = product.Id,
+                    SKU = product.SKU,
+                    Content = product.Content,
+                    ReviewCounts = product.ReviewCounts,
+                    Stars = product.Stars,
                     Title = product.Title,
-                    Description = product.Description,
-                    Image = product.Image,
-                    Status = product.Status,
-                    CategoryId = product.CategoryId
+                    Price = product.Price,
+                    OldPrice = product.OldPrice,
+                    Symbols = product.Symbols,
+                    MainImg = product.MainImg,
                 };
                 return productResponse;
             }
             catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void DeleteProduct(int id)
-        {
-            try
-            {
-                var product = _productsRepository.GetProductsById(id);
-                _productsRepository.DeleteProduct(product);
-            }
-            catch (Exception ex)
             {
                 throw ex;
             }
@@ -65,39 +72,25 @@ namespace ptm_store_service.Services
         {
             try
             {
-                var products = _productsRepository.GetAllProducts();
-                var productsResponseList = products.Select(pr => new ProductsResponseModel
+                var productList = _productsRepository.GetAllProducts();
+                var products = productList.Select(x => new ProductsResponseModel
                 {
-                    Id = pr.Id,
-                    Title = pr.Title,
-                    Description = pr.Description,
-                    Image = pr.Image,
-                    Status = pr.Status,
-                    CategoryId = pr.CategoryId
+                    Id = x.Id,
+                    SKU = x.SKU,
+                    Content = x.Content,
+                    ReviewCounts = x.ReviewCounts,
+                    Stars = x.Stars,
+                    Price = x.Price,
+                    OldPrice = x.OldPrice,
+                    Title = x.Title,
+                    Symbols = x.Symbols,
+                    MainImg = x.MainImg,
+                    Categories = _categoriesService.GetAllCategoriesByProductId(x.Id),
+                    Tags = _tagsService.GetAllTagsByProductId(x.Id),
+                    Reviews = _reviewsService.GetReviewsByProductId(x.Id),
+                    Gallery = _galleryeriesService.GetGalleriesByProductId(x.Id),
                 });
-                return productsResponseList.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public List<ProductsResponseModel> GetProductsByCategoryId(int categoryId)
-        {
-            try
-            {
-                var products = _productsRepository.GetProductsByCategoryId(categoryId);
-                var productsResponse = products.Select(pr => new ProductsResponseModel
-                {
-                    Id = pr.Id,
-                    Title = pr.Title,
-                    Description = pr.Description,
-                    Image = pr.Image,
-                    Status = pr.Status,
-                    CategoryId = pr.CategoryId
-                });
-                return productsResponse.ToList();
+                return products.ToList();
             }
             catch(Exception ex)
             {
@@ -105,39 +98,29 @@ namespace ptm_store_service.Services
             }
         }
 
-        public ProductsResponseModel GetProductsById(int id)
+        public ProductsResponseModel GetProductById(int id)
         {
             try
             {
                 var product = _productsRepository.GetProductsById(id);
                 var productResponse = new ProductsResponseModel
                 {
-                Id = product.Id,
-                Title = product.Title,
-                Description = product.Description,
-                Image = product.Image,
-                Status = product.Status,
-                CategoryId = product.CategoryId
+                    Id = product.Id,
+                    SKU = product.SKU,
+                    Content = product.Content,
+                    ReviewCounts = product.ReviewCounts,
+                    Stars = product.Stars,
+                    Price = product.Price,
+                    OldPrice = product.OldPrice,
+                    Title = product.Title,
+                    Symbols = product.Symbols,
+                    MainImg = product.MainImg,
+                    Categories = _categoriesService.GetAllCategoriesByProductId(id),
+                    Tags = _tagsService.GetAllTagsByProductId(id),
+                    Reviews = _reviewsService.GetReviewsByProductId(id),
+                    Gallery = _galleryeriesService.GetGalleriesByProductId(id)
                 };
                 return productResponse;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public Products UpdateProduct(ProductsResponseModel productsResponse)
-        {
-            try
-            {
-                var product = _productsRepository.GetProductsById(productsResponse.Id);
-                product.Title = productsResponse.Title;
-                product.Description = productsResponse.Description;
-                product.Image = productsResponse.Image;
-                product.Status = productsResponse.Status;
-                product.CategoryId = productsResponse.CategoryId;
-                return product;
             }
             catch (Exception ex)
             {

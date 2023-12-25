@@ -28,10 +28,14 @@ namespace ptm_store_service.Repositories
             _context.SaveChanges();
         }
 
-        public List<Categories> GetAllCategories()
+        public List<Categories> GetAllCategoriesProductId(int productId)
         {
-            var CategoriesList = _context.Categories.ToList();
-            return CategoriesList;
+            var categories = _context.Products
+                .Where(p => p.Id == productId)
+                .SelectMany(p => p.Categories)
+                .ToList();
+
+            return categories;
         }
 
         public Categories GetCategoryById(int id)

@@ -36,7 +36,12 @@ namespace ptm_store_service.Controllers
                     Data = null
                 });
             }
-            return Ok(_usersService.GenerateToken(user));
+            return Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "Login successfully!!!",
+                Data = _usersService.GenerateToken(user)
+            });
         }
 
         [HttpPost("Register")]

@@ -6,7 +6,7 @@ namespace ptm_store_service.Repositories.Interface
 {
     public interface ICategoriesRepository
     {
-        List<Categories> GetAllCategories();
+        List<Categories> GetAllCategoriesProductId(int productId);
         Categories GetCategoryById(int id);
         void CreateCategory(Categories category);
         void UpdateCategory(Categories category);

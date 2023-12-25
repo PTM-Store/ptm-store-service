@@ -13,20 +13,37 @@ namespace ptm_store_service.Data
         public int Id { get; set; }
 
         [Required]
+        public string SKU { get; set; }
+
+        [Required]
+        public string Content { get; set; }
+
+        [Required]
+        public int ReviewCounts { get; set; }
+
+        public int Stars { get; set; }
+
         public string Title { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public int Price { get; set; }
 
+        [Required]
+        public int OldPrice { get; set; }
 
-        public string Image { get; set;}
+        public string Symbols { get; set; }
 
-        public string Status { get; set; }
-        
-        public int? CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public Categories Categories { get; set; }
+        [Required]
+        public string MainImg { get; set; }
 
-        public virtual ICollection<Variants> Variants { get; set; } 
+        public virtual ICollection<Galleries> Galleries { get; set; }
+
+        public virtual ICollection<Categories> Categories { get; set; } 
+
+        public virtual ICollection<Reviews> Reviews { get; set; }
+
+        public virtual ICollection<CartLines> CartLines { get; set;}
+
+        public virtual ICollection<Tags> Tags { get; set; }
     }
 }

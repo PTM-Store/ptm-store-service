@@ -18,18 +18,24 @@ namespace ptm_store_service.Controllers
             _productsService = productsService;
         }
 
-        [HttpGet("{categoryId}")]
-        [Authorize]
-        public IActionResult GetProductsByCateId([FromRoute]int categoryId)
+        [HttpGet]
+        public IActionResult GetAllProducts()
         {
-            var productsResponse = _productsService.GetProductsByCategoryId(categoryId);
-            return Ok(productsResponse);
+            var products = _productsService.GetAllProducts();
+            return Ok(products);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetProduct([FromRoute]int id)
+        {
+            var product = _productsService.GetProductById(id);
+            return Ok(product);
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody]ProductsRequestModel productsRequestModel)
+        public IActionResult CreateProduct(ProductsRequestModel model)
         {
-            var product = _productsService.CreateProduct(productsRequestModel);
+            var product = _productsService.CreateProduct(model);
             return Ok(product);
         }
     }

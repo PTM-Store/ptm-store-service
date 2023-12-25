@@ -7,7 +7,7 @@ namespace ptm_store_service.Services.Interface
 {
     public interface ICategoriesService
     {
-        List<CategoriesResponseModel> GetAllCategories();
+        List<CategoriesResponseModel> GetAllCategoriesByProductId(int productId);
         CategoriesResponseModel GetCategoryById(int id);
         Categories CreateCategory(CategoriesRequestModel categoriesRequest);
         Categories UpdateCategory(CategoriesResponseModel categoriesResponse);
