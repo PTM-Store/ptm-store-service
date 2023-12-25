@@ -50,24 +50,17 @@ namespace ptm_store_service.Services
             }
         }
 
-        public List<CategoriesResponseModel> GetAllCategories()
+        public List<CategoriesResponseModel> GetAllCategoriesByProductId(int productId)
         {
-            try
+            var categories = _categoriesRepository.GetAllCategoriesProductId(productId);
+            var categoriesRespones = categories.Select(ca => new CategoriesResponseModel
             {
-                var categoriesList = _categoriesRepository.GetAllCategories();
-                var categoriesResponseList = categoriesList.Select(c => new CategoriesResponseModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Icon = c.Icon,
-                    Link = c.Link
-                });
-                return categoriesResponseList.ToList();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+                Id = ca.Id,
+                Name = ca.Name,
+                Icon = ca.Icon,
+                Link = ca.Link,
+            });
+            return categoriesRespones.ToList();
         }
 
         public CategoriesResponseModel GetCategoryById(int id)

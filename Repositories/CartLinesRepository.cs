@@ -36,7 +36,7 @@ namespace ptm_store_service.Repositories
 
         public List<CartLines> GetCartLinesByCartId(int id)
         {
-            var cartLines = _context.CartLines.Where(ca =>  ca.CartId == id).ToList();
+            var cartLines = _context.CartLines.Where(ca => ca.CartId == id).ToList();
             return cartLines;
         }
 

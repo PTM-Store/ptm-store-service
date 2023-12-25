@@ -17,19 +17,18 @@ namespace ptm_store_service.Controllers
             _categoriesService = categoriesService;
         }
 
-        [HttpPost]
-        public IActionResult Create([FromBody]CategoriesRequestModel categoriesRequestModel)
+        [HttpGet]
+        public IActionResult GetCategoriesByProductId (int productId)
         {
-            var category = _categoriesService.CreateCategory(categoriesRequestModel);
-            return Ok(category);
+            var categories = _categoriesService.GetAllCategoriesByProductId(productId);
+            return Ok(categories);
         }
 
-        [HttpGet]
-        [Authorize]
-        public IActionResult GetAllCategories()
+        [HttpPost]
+        public IActionResult CreateCategories(CategoriesRequestModel model)
         {
-            var categories = _categoriesService.GetAllCategories();
-            return Ok(categories);
+            var category = _categoriesService.CreateCategory(model);
+            return Ok(category);
         }
     }
 }

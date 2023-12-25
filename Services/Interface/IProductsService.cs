@@ -8,10 +8,7 @@ namespace ptm_store_service.Services.Interface
     public interface IProductsService
     {
         List<ProductsResponseModel> GetAllProducts();
-        ProductsResponseModel GetProductsById(int id);
-        ProductsResponseModel CreateProduct(ProductsRequestModel productsRequest);
-        Products UpdateProduct(ProductsResponseModel productsResponse);
-        void DeleteProduct(int id);
-        List<ProductsResponseModel> GetProductsByCategoryId(int categoryId);
+        ProductsResponseModel CreateProduct(ProductsRequestModel request);
+        ProductsResponseModel GetProductById(int id);
     }
 }

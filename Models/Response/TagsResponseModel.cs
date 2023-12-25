@@ -1,0 +1,11 @@
+﻿namespace ptm_store_service.Models.Response
+{
+    public class TagsResponseModel
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Link { get; set; }
+    }
+}

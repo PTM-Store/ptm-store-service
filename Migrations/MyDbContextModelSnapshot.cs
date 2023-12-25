@@ -19,6 +19,51 @@ namespace ptm_store_service.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("CategoriesProducts", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("Products_Categories");
+                });
+
+            modelBuilder.Entity("GalleriesProducts", b =>
+                {
+                    b.Property<int>("GalleriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GalleriesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("Products_Galleries");
+                });
+
+            modelBuilder.Entity("ProductsTags", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("Products_Tags");
+                });
+
             modelBuilder.Entity("ptm_store_service.Data.Addresses", b =>
                 {
                     b.Property<int>("Id")
@@ -62,19 +107,21 @@ namespace ptm_store_service.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("ProductId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("VariantId")
-                        .IsRequired()
+                    b.Property<int?>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("VariantId")
-                        .IsUnique();
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("CartLines");
                 });
@@ -124,6 +171,25 @@ namespace ptm_store_service.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("ptm_store_service.Data.Galleries", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Img")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Thumbs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Galleries");
+                });
+
             modelBuilder.Entity("ptm_store_service.Data.Products", b =>
                 {
                     b.Property<int>("Id")
@@ -131,28 +197,92 @@ namespace ptm_store_service.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("MainImg")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
+                    b.Property<int>("OldPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewCounts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Symbols")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("ptm_store_service.Data.Reviews", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("ptm_store_service.Data.Tags", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Product");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Token", b =>
@@ -208,39 +338,49 @@ namespace ptm_store_service.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ptm_store_service.Data.Variants", b =>
+            modelBuilder.Entity("CategoriesProducts", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                    b.HasOne("ptm_store_service.Data.Categories", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasOne("ptm_store_service.Data.Products", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+            modelBuilder.Entity("GalleriesProducts", b =>
+                {
+                    b.HasOne("ptm_store_service.Data.Galleries", null)
+                        .WithMany()
+                        .HasForeignKey("GalleriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.HasOne("ptm_store_service.Data.Products", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+            modelBuilder.Entity("ProductsTags", b =>
+                {
+                    b.HasOne("ptm_store_service.Data.Products", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<double>("SalePrice")
-                        .HasColumnType("float");
-
-                    b.Property<string>("SkuCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Variants");
+                    b.HasOne("ptm_store_service.Data.Tags", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Addresses", b =>
@@ -258,15 +398,13 @@ namespace ptm_store_service.Migrations
                         .WithMany("CartLines")
                         .HasForeignKey("CartId");
 
-                    b.HasOne("ptm_store_service.Data.Variants", "Variants")
-                        .WithOne("CartLines")
-                        .HasForeignKey("ptm_store_service.Data.CartLines", "VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ptm_store_service.Data.Products", "Products")
+                        .WithMany("CartLines")
+                        .HasForeignKey("ProductsId");
 
                     b.Navigation("Cart");
 
-                    b.Navigation("Variants");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Carts", b =>
@@ -280,13 +418,13 @@ namespace ptm_store_service.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ptm_store_service.Data.Products", b =>
+            modelBuilder.Entity("ptm_store_service.Data.Reviews", b =>
                 {
-                    b.HasOne("ptm_store_service.Data.Categories", "Categories")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("ptm_store_service.Data.Products", "Products")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductsId");
 
-                    b.Navigation("Categories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Token", b =>
@@ -300,28 +438,16 @@ namespace ptm_store_service.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("ptm_store_service.Data.Variants", b =>
-                {
-                    b.HasOne("ptm_store_service.Data.Products", "Products")
-                        .WithMany("Variants")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("ptm_store_service.Data.Carts", b =>
                 {
                     b.Navigation("CartLines");
                 });
 
-            modelBuilder.Entity("ptm_store_service.Data.Categories", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("ptm_store_service.Data.Products", b =>
                 {
-                    b.Navigation("Variants");
+                    b.Navigation("CartLines");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("ptm_store_service.Data.Users", b =>
@@ -331,11 +457,6 @@ namespace ptm_store_service.Migrations
                     b.Navigation("Carts");
 
                     b.Navigation("Tokens");
-                });
-
-            modelBuilder.Entity("ptm_store_service.Data.Variants", b =>
-                {
-                    b.Navigation("CartLines");
                 });
 #pragma warning restore 612, 618
         }

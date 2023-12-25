@@ -50,13 +50,17 @@ namespace ptm_store_service
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IProductsService, ProductsService>();
-            services.AddScoped<IVariantsRepository, VariantsRepository>();
-            services.AddScoped<IVariantsService, VariantsService>();
             services.AddScoped<ICartsRepository, CartsRepository>();
             services.AddScoped<ICartsService, CartsService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IReviewsRepository, ReviewsRepository>();
+            services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IGalleriesRepository, GalleriesRepository>();
+            services.AddScoped<IGalleriesService, GalleriesService>();
+            services.AddScoped<ITagsRepository, TagsRepository>();  
+            services.AddScoped<ITagsService, TagsService>();
 
             services.AddDbContext<MyDbContext>(options =>
             {
