@@ -30,5 +30,16 @@ namespace ptm_store_service.Services
             };
             return cartResponse;
         }
+
+        public CartsResponseModel GetCartByUserId(int userId)
+        {
+            var cart = _cartsRepository.GetCartByUserId(userId);
+            var cartResponse = new CartsResponseModel
+            {
+                Id = cart.Id,
+                UserId = cart.UserId
+            };
+            return cartResponse;
+        }
     }
 }

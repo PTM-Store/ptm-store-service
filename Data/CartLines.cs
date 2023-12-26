@@ -18,7 +18,7 @@ namespace ptm_store_service.Data
         public Carts Cart { get; set; }
 
         [Required]
-        public int? ProductId { get; set; }
+        public int? ProductsId { get; set; }
         [ForeignKey("ProductsId")]
         public Products Products { get; set; }
     }

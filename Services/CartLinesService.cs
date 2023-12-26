@@ -18,34 +18,110 @@ namespace ptm_store_service.Services
             _repository = repository;
         }
 
-        public CartLines CreateCartLine(CartLinesRequestModel cartLinesRequest)
+        public CartLinesResponseModel CreateCartLine(CartLinesRequestModel cartLinesRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var cartLines = new CartLines
+                {
+                    Quantity = cartLinesRequest.Quantity,
+                    CartId = cartLinesRequest.CartId,
+                    ProductsId = cartLinesRequest.ProductId
+                };
+                _repository.CreateCartLine(cartLines);
+                var cartLinesResponse = new CartLinesResponseModel
+                {
+                    Id = cartLines.Id,
+                    Quantity = cartLines.Quantity,
+                    CartId = (int)cartLines.CartId,
+                    ProductId = (int)cartLines.ProductsId
+                };
+                return cartLinesResponse;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void DeleteCartLine(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<CartLinesResponseModel> GetAllCartLines()
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var cartLine = _repository.GetCartLinesById(id);
+                _repository.DeleteCartLine(cartLine);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public CartLinesResponseModel GetCartLine(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var cartLine = _repository.GetCartLinesById(id);
+                var cartLinesResponse = new CartLinesResponseModel
+                {
+                    Id = cartLine.Id,
+                    Quantity = cartLine.Quantity,
+                    CartId = (int)cartLine.CartId,
+                    ProductId = (int)cartLine.ProductsId
+                };
+                return cartLinesResponse;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<CartLinesResponseModel> GetCartLinesByCartId(int cartId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var cartLines = _repository.GetCartLinesByCartId(cartId);
+                var cartLinesResponse = cartLines.Select(x => new CartLinesResponseModel
+                {
+                    Id = x.Id,
+                    Quantity = x.Quantity,
+                    CartId = (int)x.CartId,
+                    ProductId = (int)x.ProductsId
+                });
+                return cartLinesResponse.ToList();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public CartLines UpdateCartLine(CartLinesRequestModel cartLinesRequest)
+        public CartLinesResponseModel UpdateCartLine(CartLinesRequestModel cartLinesRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var cartLine = _repository.GetCartLinesById(cartLinesRequest.Id);
+                if (cartLine != null)
+                {
+                    cartLine.Quantity = cartLinesRequest.Quantity;
+                    cartLine.CartId = cartLinesRequest.CartId;
+                    cartLine.ProductsId = cartLinesRequest.ProductId;
+                    _repository.UpdateCartLine(cartLine);
+                }
+                var cartLinesResponse = new CartLinesResponseModel
+                {
+                    Id = cartLine.Id,
+                    Quantity = cartLine.Quantity,
+                    CartId = (int)cartLine.CartId,
+                    ProductId = (int)cartLine.ProductsId
+                };
+                return cartLinesResponse;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

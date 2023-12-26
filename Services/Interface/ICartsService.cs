@@ -7,5 +7,6 @@ namespace ptm_store_service.Services.Interface
     public interface ICartsService
     {
         CartsResponseModel CreateCart(CartsRequestModel cartsRequestModel);
+        CartsResponseModel GetCartByUserId(int userId);
     }
 }

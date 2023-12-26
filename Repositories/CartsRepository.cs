@@ -1,5 +1,6 @@
 ﻿using ptm_store_service.Data;
 using ptm_store_service.Repositories.Interface;
+using System.Linq;
 
 namespace ptm_store_service.Repositories
 {
@@ -16,6 +17,12 @@ namespace ptm_store_service.Repositories
         {
             _context.Carts.Add(cart);
             _context.SaveChanges();
+        }
+
+        public Carts GetCartByUserId(int userId)
+        {
+            var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+            return cart;
         }
     }
 }
