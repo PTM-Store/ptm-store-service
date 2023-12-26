@@ -8,8 +8,8 @@ namespace ptm_store_service.Services.Interface
     public interface ICartLinesService
     {
         CartLinesResponseModel GetCartLine(int id);
-        CartLinesResponseModel CreateCartLine(CartLinesRequestModel cartLinesRequest);
-        CartLinesResponseModel UpdateCartLine(CartLinesRequestModel cartLinesRequest);
+        CartLinesResponseModel CreateCartLine(CartLinesAddingRequest cartLinesRequest);
+        CartLinesResponseModel UpdateCartLine(int cartLineId, QuantityCartLine quantityCartLine);
         void DeleteCartLine(int id);
         List<CartLinesResponseModel> GetCartLinesByCartId(int cartId);
     }

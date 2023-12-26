@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ptm_store_service.Models.Request;
+using ptm_store_service.Models.Response;
 using ptm_store_service.Services.Interface;
 
 namespace ptm_store_service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CartLinesController : ControllerBase
     {
         private readonly ICartLinesService _cartLinesService;
@@ -27,17 +29,19 @@ namespace ptm_store_service.Controllers
             return Ok(cartLines);
         }
 
-        [HttpPost]
-        public IActionResult CreateCartLines(CartLinesRequestModel cartLinesRequestModel)
+        [HttpPost("{userId}")]
+        public IActionResult CreateCartLines([FromRoute]int userId, [FromBody]CartLinesAddingRequest cartLinesRequestModel)
         {
+            var cart = _cartsService.GetCartByUserId(userId);
+            cartLinesRequestModel.CartId = cart.Id;
             var cartLines = _cartLinesService.CreateCartLine(cartLinesRequestModel);
             return Ok(cartLines);
         }
 
-        [HttpPut]
-        public IActionResult UpdateCartLine(CartLinesRequestModel cartLinesRequestModel)
+        [HttpPut("{cartLineId}")]
+        public IActionResult UpdateCartLine([FromRoute]int cartLineId, [FromBody]QuantityCartLine quantityCartLine)
         {
-            var cartLines = _cartLinesService.UpdateCartLine(cartLinesRequestModel);
+            var cartLines = _cartLinesService.UpdateCartLine(cartLineId,quantityCartLine);
             return Ok(cartLines);
         }
 
