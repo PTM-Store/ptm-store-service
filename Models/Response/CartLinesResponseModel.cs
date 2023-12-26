@@ -8,6 +8,6 @@
 
         public int CartId { get; set; }
 
-        public int ProductId { get; set; }
+        public ProductsResponseModel Product { get; set; }
     }
 }

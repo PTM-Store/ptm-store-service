@@ -12,19 +12,21 @@ namespace ptm_store_service.Services
     public class CartLinesService : ICartLinesService
     {
         private readonly ICartLinesRepository _repository;
+        private readonly IProductsService _productsService;
 
-        public CartLinesService(ICartLinesRepository repository)
+        public CartLinesService(ICartLinesRepository repository, IProductsService productsService)
         {
             _repository = repository;
+            _productsService = productsService;
         }
 
-        public CartLinesResponseModel CreateCartLine(CartLinesRequestModel cartLinesRequest)
+        public CartLinesResponseModel CreateCartLine(CartLinesAddingRequest cartLinesRequest)
         {
             try
             {
                 var cartLines = new CartLines
                 {
-                    Quantity = cartLinesRequest.Quantity,
+                    Quantity = 1,
                     CartId = cartLinesRequest.CartId,
                     ProductsId = cartLinesRequest.ProductId
                 };
@@ -32,9 +34,9 @@ namespace ptm_store_service.Services
                 var cartLinesResponse = new CartLinesResponseModel
                 {
                     Id = cartLines.Id,
-                    Quantity = cartLines.Quantity,
+                    Quantity = 1,
                     CartId = (int)cartLines.CartId,
-                    ProductId = (int)cartLines.ProductsId
+                    Product = _productsService.GetProductById((int)cartLines.ProductsId)
                 };
                 return cartLinesResponse;
             }
@@ -67,7 +69,7 @@ namespace ptm_store_service.Services
                     Id = cartLine.Id,
                     Quantity = cartLine.Quantity,
                     CartId = (int)cartLine.CartId,
-                    ProductId = (int)cartLine.ProductsId
+                    Product = _productsService.GetProductById((int)cartLine.ProductsId)
                 };
                 return cartLinesResponse;
             }
@@ -87,7 +89,7 @@ namespace ptm_store_service.Services
                     Id = x.Id,
                     Quantity = x.Quantity,
                     CartId = (int)x.CartId,
-                    ProductId = (int)x.ProductsId
+                    Product = _productsService.GetProductById((int)x.ProductsId)
                 });
                 return cartLinesResponse.ToList();
             }
@@ -97,26 +99,28 @@ namespace ptm_store_service.Services
             }
         }
 
-        public CartLinesResponseModel UpdateCartLine(CartLinesRequestModel cartLinesRequest)
+        public CartLinesResponseModel UpdateCartLine(int cartLineId, QuantityCartLine quantityCartLine)
         {
             try
             {
-                var cartLine = _repository.GetCartLinesById(cartLinesRequest.Id);
+                var cartLine = _repository.GetCartLinesById(cartLineId);
                 if (cartLine != null)
                 {
-                    cartLine.Quantity = cartLinesRequest.Quantity;
-                    cartLine.CartId = cartLinesRequest.CartId;
-                    cartLine.ProductsId = cartLinesRequest.ProductId;
+                    cartLine.Quantity = quantityCartLine.quantity;
                     _repository.UpdateCartLine(cartLine);
+                    var cartLinesResponse = new CartLinesResponseModel
+                    {
+                        Id = cartLine.Id,
+                        Quantity = cartLine.Quantity,
+                        CartId = (int)cartLine.CartId,
+                        Product = _productsService.GetProductById((int)cartLine.ProductsId)
+                    };
+                    return cartLinesResponse;
                 }
-                var cartLinesResponse = new CartLinesResponseModel
+                else
                 {
-                    Id = cartLine.Id,
-                    Quantity = cartLine.Quantity,
-                    CartId = (int)cartLine.CartId,
-                    ProductId = (int)cartLine.ProductsId
-                };
-                return cartLinesResponse;
+                    return null;
+                }
             }
             catch (Exception ex)
             {
